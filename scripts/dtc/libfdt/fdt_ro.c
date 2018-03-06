@@ -647,8 +647,10 @@ int fdt_node_check_compatible(const void *fdt, int nodeoffset,
 	prop = fdt_getprop(fdt, nodeoffset, "compatible", &len);
 	if (!prop)
 		return len;
-
-	return !fdt_stringlist_contains(prop, len, compatible);
+	if (fdt_stringlist_contains(prop, len, compatible))
+		return 0;
+	else
+		return 1;
 }
 
 int fdt_node_offset_by_compatible(const void *fdt, int startoffset,
